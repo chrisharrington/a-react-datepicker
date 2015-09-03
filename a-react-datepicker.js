@@ -1,15 +1,14 @@
 "use strict";
 
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    global.AReactDatepicker = factory()
+    if (typeof exports === "object" && typeof module !== "undefined")
+        module.exports = factory();
+    if (typeof define === "function" && define.amd)
+        define(factory);
+    global.AReactDatepicker = factory();
 }(this, function () {
-    var React = typeof require === "function" ? require("react") : window.React;
-
     var DateUtilities = {
         pad: function(value, length) {
-            console.log(value);
             while (value.length < length)
                 value = "0" + value;
             return value;
