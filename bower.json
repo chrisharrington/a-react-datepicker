@@ -11,7 +11,8 @@
       "style.css"
   ],
   "moduleType": [
-    "amd"
+    "amd",
+    "globals"
   ],
   "keywords": [
     "react",
