@@ -89,8 +89,10 @@
 
     	onSelect: function(day) {
             this.setState({ selected: day });
-    		this.props.onSelect(day);
     		this.hide();
+
+            if (this.props.onSelect)
+            this.props.onSelect(day);
     	},
 
     	show: function() {
