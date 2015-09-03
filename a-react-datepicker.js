@@ -5,6 +5,8 @@
     typeof define === 'function' && define.amd ? define(factory) :
     global.AReactDatepicker = factory()
 }(this, function () {
+    var React = typeof require === "function" ? require("react") : window.React;
+
     var DateUtilities = {
         pad: function(value, length) {
             console.log(value);
