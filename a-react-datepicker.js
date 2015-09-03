@@ -7,6 +7,7 @@
 }(this, function () {
     var DateUtilities = {
         pad: function(value, length) {
+            console.log(value);
             while (value.length < length)
                 value = "0" + value;
             return value;
@@ -17,7 +18,7 @@
         },
 
         toString: function(date) {
-            return date.getFullYear() + "-" + DateUtilities.pad((date.getMonth()+1, 2).toString() + "-" + DateUtilities.pad(date.getDate().toString(), 2));
+            return date.getFullYear() + "-" + DateUtilities.pad((date.getMonth()+1).toString(), 2) + "-" + DateUtilities.pad(date.getDate().toString(), 2);
         },
 
         toDayOfMonthString: function(date) {
