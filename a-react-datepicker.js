@@ -7,6 +7,8 @@
         define(factory);
     global.AReactDatepicker = factory();
 }(this, function () {
+    var React = typeof require === "function" ? require("react") : window.React;
+
     var DateUtilities = {
         pad: function(value, length) {
             while (value.length < length)
