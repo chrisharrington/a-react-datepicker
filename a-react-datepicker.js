@@ -1,9 +1,11 @@
 "use strict";
 
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    global.AReactDatepicker = factory()
+    if (typeof exports === "object" && typeof module !== "undefined")
+        module.exports = factory();
+    if (typeof define === "function" && define.amd)
+        define(factory);
+    global.AReactDatepicker = factory();
 }(this, function () {
     var DateUtilities = {
         pad: function(value, length) {
@@ -17,7 +19,7 @@
         },
 
         toString: function(date) {
-            return date.getFullYear() + "-" + DateUtilities.pad((date.getMonth()+1, 2).toString() + "-" + DateUtilities.pad(date.getDate().toString(), 2));
+            return date.getFullYear() + "-" + DateUtilities.pad((date.getMonth()+1).toString(), 2) + "-" + DateUtilities.pad(date.getDate().toString(), 2);
         },
 
         toDayOfMonthString: function(date) {
@@ -87,8 +89,10 @@
 
     	onSelect: function(day) {
             this.setState({ selected: day });
-    		this.props.onSelect(day);
     		this.hide();
+
+            if (this.props.onSelect)
+            this.props.onSelect(day);
     	},
 
     	show: function() {

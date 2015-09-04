@@ -1,6 +1,6 @@
 {
   "name": "a-react-datepicker",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "homepage": "https://github.com/chrisharrington/a-react-datepicker",
   "authors": [
     "Chris Harrington <chrisharrington99@gmail.com>"
@@ -21,9 +21,13 @@
   "license": "MIT",
   "ignore": [
     "**/.*",
+    "LICENSE",
     "node_modules",
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "react": "~0.13.2"
+  }
 }
