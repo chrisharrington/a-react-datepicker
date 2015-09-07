@@ -124,7 +124,7 @@
     	},
 
     	render: function() {
-    		return React.createElement("div", {className: "calendar" + (this.props.visible ? " visible" : ""), style: { top: (this.props.clientHeight || 0) + "px" }},
+    		return React.createElement("div", {className: "calendar" + (this.props.visible ? " visible" : ""), style: { top: (this.props.top || 0) + "px" }},
     			React.createElement(MonthHeader, {ref: "monthHeader", view: this.props.view, onMove: this.onMove}),
     			React.createElement(WeekHeader, null),
     			React.createElement(Weeks, {ref: "weeks", view: this.props.view, selected: this.props.selected, onTransitionEnd: this.onTransitionEnd, onSelect: this.props.onSelect, minDate: this.props.minDate, maxDate: this.props.maxDate})
