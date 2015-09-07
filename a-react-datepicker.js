@@ -98,7 +98,7 @@
     	},
 
     	show: function() {
-    		this.setState({ visible: true });
+    		this.setState({ visible: true, top: this.refs.trigger.getDOMNode().clientHeight });
     	},
 
     	hide: function() {
@@ -107,9 +107,9 @@
 
     	render: function() {
     		return React.createElement("div", {className: "ardp-date-picker"},
-    			React.createElement("input", {type: "text", className: "date-picker-trigger", readOnly: true, value: DateUtilities.toString(this.state.selected), onClick: this.show}),
+    			React.createElement("input", {ref: "trigger", type: "text", className: "date-picker-trigger", readOnly: true, value: DateUtilities.toString(this.state.selected), onClick: this.show}),
 
-    			React.createElement(Calendar, {visible: this.state.visible, view: this.state.view, selected: this.state.selected, onSelect: this.onSelect, minDate: this.state.minDate, maxDate: this.state.maxDate})
+    			React.createElement(Calendar, {top: this.state.top, visible: this.state.visible, view: this.state.view, selected: this.state.selected, onSelect: this.onSelect, minDate: this.state.minDate, maxDate: this.state.maxDate})
     		);
     	}
     });
@@ -124,7 +124,7 @@
     	},
 
     	render: function() {
-    		return React.createElement("div", {className: "calendar" + (this.props.visible ? " visible" : "")},
+    		return React.createElement("div", {className: "calendar" + (this.props.visible ? " visible" : ""), style: { top: (this.props.clientHeight || 0) + "px" }},
     			React.createElement(MonthHeader, {ref: "monthHeader", view: this.props.view, onMove: this.onMove}),
     			React.createElement(WeekHeader, null),
     			React.createElement(Weeks, {ref: "weeks", view: this.props.view, selected: this.props.selected, onTransitionEnd: this.onTransitionEnd, onSelect: this.props.onSelect, minDate: this.props.minDate, maxDate: this.props.maxDate})
