@@ -65,11 +65,17 @@
     	},
 
     	componentDidMount: function() {
-    		document.addEventListener("click", function(e) {
-    			if (this.state.visible && e.target.className !== "date-picker-trigger" && !this.parentsHaveClassName(e.target, "date-picker"))
-    				this.hide();
-    		}.bind(this));
+    		document.addEventListener("click", this.hideOnDocumentClick);
     	},
+
+        componentWillUnmount: function() {
+            document.removeEventListener("click", this.hideOnDocumentClick);
+        },
+
+        hideOnDocumentClick: function(e) {
+            if (this.state.visible && e.target.className !== "date-picker-trigger" && !this.parentsHaveClassName(e.target, "date-picker"))
+                this.hide();
+        },
 
     	parentsHaveClassName: function(element, className) {
     		var parent = element;
