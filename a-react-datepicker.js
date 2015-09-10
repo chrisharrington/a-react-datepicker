@@ -141,6 +141,24 @@
     });
 
     var Calendar = React.createClass({displayName: "Calendar",
+        getInitialState: function() {
+            return {
+                display: "none"
+            };
+        },
+
+        componentDidMount: function() {
+            this.refs.calendar.getDOMNode().addEventListener("transitionend", this.hideCalendar);
+        },
+
+        componentWillUnmount: function() {
+            this.refs.calendar.getDOMNode().removeEventListener("transitionend", this.hideCalendar);
+        },
+
+        hideCalendar: function() {
+            this.setState({ display: "block" });
+        },
+
     	onMove: function(view, isForward) {
     		this.refs.weeks.moveTo(view, isForward);
     	},
@@ -150,7 +168,12 @@
     	},
 
         render: function() {
-    		return React.createElement("div", {className: "ardp-calendar-" + this.props.id + " calendar" + (this.props.visible ? " visible" : ""), style: this.props.position },
+            var style = {
+                top: this.props.position.top || 0,
+                left: this.props.position.left || 0,
+                opacity: this.props.visible ? 1 : 0
+            };
+    		return React.createElement("div", {ref: "calendar", className: "ardp-calendar-" + this.props.id + " calendar", style: style },
     			React.createElement(MonthHeader, {ref: "monthHeader", view: this.props.view, onMove: this.onMove}),
     			React.createElement(WeekHeader, null),
     			React.createElement(Weeks, {ref: "weeks", view: this.props.view, selected: this.props.selected, onTransitionEnd: this.onTransitionEnd, onSelect: this.props.onSelect, minDate: this.props.minDate, maxDate: this.props.maxDate})
