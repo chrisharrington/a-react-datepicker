@@ -1,9 +1,7 @@
 div.ardp-date-picker {
   font-size:16px;
   font-family:Arial;
-  position: relative;
   box-sizing:border-box;
-
 }
 div.ardp-date-picker * {
     box-sizing:border-box;

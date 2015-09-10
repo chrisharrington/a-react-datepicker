@@ -60,7 +60,9 @@
                 selected: DateUtilities.clone(def),
     			minDate: null,
     			maxDate: null,
-    			visible: false
+    			visible: false,
+                position: {},
+                id: this.getUniqueIdentifier()
     		};
     	},
 
@@ -73,8 +75,18 @@
         },
 
         hideOnDocumentClick: function(e) {
-            if (this.state.visible && e.target.className !== "date-picker-trigger" && !this.parentsHaveClassName(e.target, "date-picker"))
+            if (this.state.visible && e.target.className !== "date-picker-trigger-" + this.state.id && !this.parentsHaveClassName(e.target, "ardp-calendar-" + this.state.id))
                 this.hide();
+        },
+
+        getUniqueIdentifier: function() {
+            function s4() {
+                return Math.floor((1 + Math.random()) * 0x10000)
+                  .toString(16)
+                  .substring(1);
+            }
+
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
         },
 
     	parentsHaveClassName: function(element, className) {
@@ -85,6 +97,8 @@
 
     			parent = parent.parentNode;
     		}
+
+            return false;
     	},
 
     	setMinDate: function(date) {
@@ -104,7 +118,13 @@
     	},
 
     	show: function() {
-    		this.setState({ visible: true, top: this.refs.trigger.getDOMNode().clientHeight });
+            var trigger = this.refs.trigger.getDOMNode(),
+                rect = trigger.getBoundingClientRect();
+
+    		this.setState({
+                visible: true,
+                position: { top: rect.top + trigger.clientHeight + 3, left: rect.left }
+            });
     	},
 
     	hide: function() {
@@ -113,9 +133,9 @@
 
     	render: function() {
     		return React.createElement("div", {className: "ardp-date-picker"},
-    			React.createElement("input", {ref: "trigger", type: "text", className: "date-picker-trigger", readOnly: true, value: DateUtilities.toString(this.state.selected), onClick: this.show}),
+    			React.createElement("input", {ref: "trigger", type: "text", className: "date-picker-trigger-" + this.state.id, readOnly: true, value: DateUtilities.toString(this.state.selected), onClick: this.show}),
 
-    			React.createElement(Calendar, {top: this.state.top, visible: this.state.visible, view: this.state.view, selected: this.state.selected, onSelect: this.onSelect, minDate: this.state.minDate, maxDate: this.state.maxDate})
+    			React.createElement(Calendar, {id: this.state.id, position: this.state.position, visible: this.state.visible, view: this.state.view, selected: this.state.selected, onSelect: this.onSelect, minDate: this.state.minDate, maxDate: this.state.maxDate})
     		);
     	}
     });
@@ -129,8 +149,8 @@
     		this.refs.monthHeader.enable();
     	},
 
-    	render: function() {
-    		return React.createElement("div", {className: "calendar" + (this.props.visible ? " visible" : ""), style: { top: (this.props.top || 0) + "px" }},
+        render: function() {
+    		return React.createElement("div", {className: "ardp-calendar-" + this.props.id + " calendar" + (this.props.visible ? " visible" : ""), style: this.props.position },
     			React.createElement(MonthHeader, {ref: "monthHeader", view: this.props.view, onMove: this.onMove}),
     			React.createElement(WeekHeader, null),
     			React.createElement(Weeks, {ref: "weeks", view: this.props.view, selected: this.props.selected, onTransitionEnd: this.onTransitionEnd, onSelect: this.props.onSelect, minDate: this.props.minDate, maxDate: this.props.maxDate})
