@@ -117,10 +117,12 @@
 
     	show: function() {
             var trigger = this.refs.trigger.getDOMNode(),
-                rect = trigger.getBoundingClientRect();
+                rect = trigger.getBoundingClientRect(),
+                isTopHalf = rect.top > window.innerHeight/2,
+                calendarHeight = 203;
 
             this.refs.calendar.show({
-                top: rect.top + trigger.clientHeight + window.scrollY + 3,
+                top: isTopHalf ? (rect.top + window.scrollY - calendarHeight - 3) : (rect.top + trigger.clientHeight + window.scrollY + 3),
                 left: rect.left
             });
     	},
