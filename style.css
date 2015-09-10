@@ -16,10 +16,17 @@ div.ardp-date-picker div.calendar {
   border-radius: 3px;
   height: 203px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  -webkit-transition: opacity 200ms ease;
-  transition: opacity 200ms ease;
   overflow: hidden;
-  opacity:0;
+}
+div.ardp-date-picker div.calendar.calendar-show {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 100ms linear;
+}
+div.ardp-date-picker div.calendar.calendar-hide {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 100ms, opacity 100ms linear;
 }
 div.ardp-date-picker div.calendar div.month-header {
   float: left;

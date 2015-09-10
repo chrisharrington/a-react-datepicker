@@ -60,8 +60,6 @@
                 selected: DateUtilities.clone(def),
     			minDate: null,
     			maxDate: null,
-    			visible: false,
-                position: {},
                 id: this.getUniqueIdentifier()
     		};
     	},
@@ -75,7 +73,7 @@
         },
 
         hideOnDocumentClick: function(e) {
-            if (this.state.visible && e.target.className !== "date-picker-trigger-" + this.state.id && !this.parentsHaveClassName(e.target, "ardp-calendar-" + this.state.id))
+            if (e.target.className !== "date-picker-trigger-" + this.state.id && !this.parentsHaveClassName(e.target, "ardp-calendar-" + this.state.id))
                 this.hide();
         },
 
@@ -121,21 +119,21 @@
             var trigger = this.refs.trigger.getDOMNode(),
                 rect = trigger.getBoundingClientRect();
 
-    		this.setState({
-                visible: true,
-                position: { top: rect.top + trigger.clientHeight + 3, left: rect.left }
+            this.refs.calendar.show({
+                top: rect.top + trigger.clientHeight + window.scrollY + 3,
+                left: rect.left
             });
     	},
 
     	hide: function() {
-    		this.setState({ visible: false });
+    		this.refs.calendar.hide();
     	},
 
     	render: function() {
     		return React.createElement("div", {className: "ardp-date-picker"},
     			React.createElement("input", {ref: "trigger", type: "text", className: "date-picker-trigger-" + this.state.id, readOnly: true, value: DateUtilities.toString(this.state.selected), onClick: this.show}),
 
-    			React.createElement(Calendar, {id: this.state.id, position: this.state.position, visible: this.state.visible, view: this.state.view, selected: this.state.selected, onSelect: this.onSelect, minDate: this.state.minDate, maxDate: this.state.maxDate})
+    			React.createElement(Calendar, {ref: "calendar", id: this.state.id, view: this.state.view, selected: this.state.selected, onSelect: this.onSelect, minDate: this.state.minDate, maxDate: this.state.maxDate})
     		);
     	}
     });
@@ -143,23 +141,11 @@
     var Calendar = React.createClass({displayName: "Calendar",
         getInitialState: function() {
             return {
-                display: "none"
+                visible: false
             };
         },
 
-        componentDidMount: function() {
-            this.refs.calendar.getDOMNode().addEventListener("transitionend", this.hideCalendar);
-        },
-
-        componentWillUnmount: function() {
-            this.refs.calendar.getDOMNode().removeEventListener("transitionend", this.hideCalendar);
-        },
-
-        hideCalendar: function() {
-            this.setState({ display: "block" });
-        },
-
-    	onMove: function(view, isForward) {
+        onMove: function(view, isForward) {
     		this.refs.weeks.moveTo(view, isForward);
     	},
 
@@ -167,13 +153,23 @@
     		this.refs.monthHeader.enable();
     	},
 
+        show: function(position) {
+            this.setState({
+                visible: true,
+                style: {
+                    top: position.top,
+                    left: position.left
+                }
+            });
+        },
+
+        hide: function() {
+            if (this.state.visible)
+                this.setState({ visible: false });
+        },
+
         render: function() {
-            var style = {
-                top: this.props.position.top || 0,
-                left: this.props.position.left || 0,
-                opacity: this.props.visible ? 1 : 0
-            };
-    		return React.createElement("div", {ref: "calendar", className: "ardp-calendar-" + this.props.id + " calendar", style: style },
+    		return React.createElement("div", {ref: "calendar", className: "ardp-calendar-" + this.props.id + " calendar" + (this.state.visible ? " calendar-show" : " calendar-hide"), style: this.state.style },
     			React.createElement(MonthHeader, {ref: "monthHeader", view: this.props.view, onMove: this.onMove}),
     			React.createElement(WeekHeader, null),
     			React.createElement(Weeks, {ref: "weeks", view: this.props.view, selected: this.props.selected, onTransitionEnd: this.onTransitionEnd, onSelect: this.props.onSelect, minDate: this.props.minDate, maxDate: this.props.maxDate})
