@@ -1,0 +1,23 @@
+{
+  "name": "a-react-datepicker",
+  "version": "1.0.0",
+  "description": "A datepicker for React.",
+  "main": "a-react-datepicker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisharrington/a-react-datepicker.git"
+  },
+  "keywords": [
+    "react",
+    "datepicker"
+  ],
+  "author": "Chris Harrington <chrisharrington99@gmail.com> (http://dapperdeveloper.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chrisharrington/a-react-datepicker/issues"
+  },
+  "homepage": "https://github.com/chrisharrington/a-react-datepicker#readme"
+}
